@@ -13,7 +13,7 @@ Please, request your credentials. You will receive an email containing these fie
     <td>API Key used for devices to send data</td>
   </tr>
   <tr>
-    <td>{{user-token}}      </td>
+    <td>{{token}}      </td>
     <td>API Key used for applications to access data</td>
   </tr>
   <tr>
@@ -24,17 +24,10 @@ Please, request your credentials. You will receive an email containing these fie
     <td>{{Fiware-ServicePath}}      </td>
     <td>Sub-service name</td>
   </tr>
-  <tr>
-    <td>{{user-name}}      </td>
-    <td>User name for web portal</td>
-  </tr>
-  <tr>
-    <td>{{user-password}}      </td>
-    <td>Password for web portal</td>
-  </tr>
 </table>
 </p>
 
+The apikey is identical to the token.
 In order test the API, we really recommend you use the following sample
 collection for [*POSTMAN extension for Google
 Chrome*](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop),
@@ -63,7 +56,7 @@ Please remember that you will need to send as query parameters on the URL your {
   </tr>
   <tr>
     <th>URL</th>
-    <td>http://test.ttcloud.net:8082/iot/d?k={{apikey}}&i=mydevice</td>
+    <td>http://hackathon.villatolosa.com/ul/iot/d?i=myEdison&k={{TOKEN}}</td>
   </tr>
   <tr>
     <th>HTTP Headers</th>
@@ -85,47 +78,25 @@ the message length sent from the device.
 Your will simply receive an HTTP 200 OK response to confirm the data was
 properly received at the Cloud.
 
-# Step 2 - See data
+# Step 2 - Get data
 
-Your device data is now stored in the Cloud, and your
-can see it on the web portal. Please access the web portal with your
-Username, Password and Fiware-Service:
-
-[*http://test.ttcloud.net:8008/\#/*](http://test.ttcloud.net:8008/#/)
-
-Now you have to switch to your subservice {{Fiware-ServicePath}} at
-right top switch:
-
-![](media/image05.png)
-
-After that, you will see your device data the Entities list:
-
-![](media/image01.png)
-
-### Step 3 - Get data
-
-Now your know your data is stored in the Cloud, lets get
-it via API.
-
-
-
-Now you are ready to invoke the API to get your device data. Just do an
-HTTP GET request like this:
-
+Your device data is now stored in the Cloud, lets get it via API.
 <p>
-<table cellpadding="10", border="1" >
-  <tr>
-    <th>HTTP method</th>
-    <td>GET</td>
-  </tr>
-  <tr>
-    <th>HTTP headers</th>
-    <td>Accept: application/json ; Fiware-Service: {{Fiware-Service}} ; Fiware-ServicePath: {{Fiware-ServicePath}} ;     X-Auth-Token: {{user-token}}</td>
-  </tr>
-
-</table>
-</p>
-
+ <table cellpadding="10", border="1" >
+   <tr>
+     <th>HTTP method</th>
+     <td>GET</td>
+   </tr>
+   <tr>
+     <th>URL</th>
+     <td>http://hackathon.villatolosa.com/cb/v1/contextEntities/myEdison</td>
+   </tr>
+   <tr>
+     <th>HTTP Headers</th>
+     <td>-</td>
+   </tr>
+ </table>
+ </p>
 
 
 You will get you device data in a json document like this that is FIWARE
@@ -146,9 +117,9 @@ NGSI compliant:
     <td>
       {
                 "contextElement": {
-                         "type": "device",
+                         "type": "edison",
                           "isPattern": "false",
-                          "id": "mydevice",
+                          "id": "myEdison",
                          "attributes": [
                           {
                          "name": "TimeInstant",
@@ -186,7 +157,7 @@ per device.
 
 ![](media/image04.png)
 
-On the FIWARE Orion datasource configuration introduce there your credentials and your device type and ID as retrieved on Step 3 from the Cloud API.
+On the FIWARE Orion datasource configuration introduce there your credentials and your device type and ID as retrieved on Step 2 from the Cloud API.
 
 
 
@@ -203,34 +174,64 @@ Anyway, you can always clone this sample freeboard and use it as a template for 
 ### Step 5 - Send commands 
 
 You can send commands to the device in order to trigger any action like
-turning on a LED or a relay. In order to do so, you need to set your
-device at the website.
-
-First, create a new device on the “Devices” management tab:
-
-![](media/image00.png)
-
-After that, register a new command for the device taking into account:
-
--   Endpoint: if your device has a public IP, we will push the commands
-    > to that URL. Otherwise, the commands can be polled.
-
--   Command value: it must follow these convention
-    > device\_id@{{command\_name}}|%s
-
-![](media/image03.png)
+turning on a LED or a relay. In order to do so, you need to register your
+device.
 
 Remember that you can also setup your device via API, you will find an
 example on the POSTMAN collection.
 
+<p>
+<table cellpadding="10", border="1" >
+  <tr>
+    <th>HTTP method</th>
+    <td>POST</td>
+  </tr>
+  <tr>
+    <th>URL</th>
+    <td>http://hackathon.villatolosa.com/ul/iot/devices</td>
+  </tr>
+  <tr>
+    <th>HTTP Headers</th>
+    <td>-</td>
+  </tr>
+  <tr>
+    <th>HTTP Body</th>
+    <td>{
+          "devices": [
+            {
+              "device_id": "myEdison",
+              "entity_name": "myEdison",
+              "entity_type": "edison",
+              "protocol": "PDI-IoTA-UltraLight",
+              "attributes": [
+                {
+                  "object_id": "l",
+                  "name": "lux",
+                  "type": "string"
+                },
+                {
+                  "object_id": "p",
+                  "name": "button",
+                  "type": "string"
+                }
+              ],
+              "commands": [
+                {
+                  "name": "SET",
+                  "type": "command",
+                  "value": "myEdison@ledr|%s"
+                }
+              ]
+            }
+          ]
+        }
+    </td>
+  </tr>
+</table>
+</p>
+
 Once the command is configured, you can send commands to the device just
-updating the entity attribute associated to that command, or using the
-web interface.
-
-On the Entities section, select the entity linked to that device and
-click on the “Send Command” green button to submit it.
-
-![](media/image06.png)
+updating the entity attribute associated to that command.
 
 The commands will be received on the device endpoint if configured on
 the device setup. Remember that if you left that field empty, the
@@ -244,7 +245,7 @@ commands can be pulled directly from the device:
   </tr>
   <tr>
     <th>URL</th>
-    <td>http://test.ttcloud.net:8082/iot/d?k={{apikey}}&i=mydevice</td>
+    <td>http://hackathon.villatolosa.com:8080/iot/d?i=myEdison&k={{TOKEN}}</td>
   </tr>
   <tr>
     <th>HTTP headers</th>
@@ -306,7 +307,7 @@ Historic data is accessible using the Short Term historic API.
   </tr>
   <tr>
     <th>URL</th>
-    <td>http://test.ttcloud.net:8666/STH/v1/contextEntities/type/device/id/device:mydevice/attributes/h?lastN=10</td>
+    <td>http://hackathon.villatolosa.com/sth/type/device/id/device:mydevice/attributes/h?lastN=10</td>
   </tr>
   <tr>
     <th>HTTP headers</th>
@@ -327,8 +328,8 @@ Historic data is accessible using the Short Term historic API.
   <tr>
     <th>URL</th>
     <td>
-    http://test.ttcloud.net:8666/STH/v1/contextEntities/type/device/id/device:mydevice/attributes/h?aggrMethod=sum&aggrPeriod=hour&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2016-01-22T23:00:00.000Z
-    http://test.ttcloud.net:8666/STH/v1/contextEntities/type/device/id/device:mydevice/attributes/h?lastN=10</td>
+    http://hackathon.villatolosa.com/sth/type/edison/id/myEdison/attributes/h?aggrMethod=sum&aggrPeriod=hour&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2016-01-22T23:00:00.000Z
+    http://hackathon.villatolosa.com/STH/type/type/device/id/myEdison/attributes/h?lastN=10</td>
   </tr>
   <tr>
     <th>HTTP headers</th>
@@ -340,17 +341,9 @@ Historic data is accessible using the Short Term historic API.
 
 >> Remember that in order to collect historic data, it is necessary to
 >> configure the required subscription (endpoint:
->> http://test.ttcloud.net:8666/notify).
+>> http://hackathon.villatolosa.com/sth/notify).
 
 More info: [Historic Data API](historicdata_api.md)
-
-** New accounts and subservices **
-
-You can create new users and credentials at the web portal. It is also
-possible to have different subservices in order to segment properly your
-data.
-
-More info: [Management API](management_api.md)
 
 **Data visualization tools**
 
@@ -360,91 +353,3 @@ our set of data visualization tools connectors:
 
 [*https://github.com/telefonicaid/fiware-dataviz*](https://github.com/telefonicaid/fiware-dataviz)
 
-**Getting more API tokens**
-
-With your credentials we gave you a token, but you may need more.
-
-To do so, you can login in the Authentication API to get a new token:
-
-<p>
-<table cellpadding="10", border="1" >
-  <tr>
-    <th>HTTP method</th>
-    <td>POST</td>
-  </tr>
-  <tr>
-    <th>URL</th>
-    <td>http://test.ttcloud.net:5001/v3/auth/tokens</td>
-  </tr>
-  <tr>
-    <th>HTTP Headers</th>
-    <td>Content-Type: application/json</td>
-  </tr>
-  <tr>
-    <th>HTTP Body</th>
-    <td>
-      {
-            "auth": {
-                     "identity": {
-                     "methods": [
-                     "password"
-                     ],
-                     "password": {
-                     "user": {
-                     "domain": {
-                     "name": "{{Fiware-Service}}"
-                     },
-                     "name": "{{user-name}}",
-                     "password": "{{user-pass}}"
-                     }
-                     }
-                     },
-                     "scope": {
-                     "domain": {
-                     "name": "{{Fiware-Service}}"
-                     }
-                     }
-                     }
-                     }
-    </td>
-  </tr>
-</table>
-</p>
-
-
-You will receive an HTTP 201 Created response with a header called
-X-Subject-Token, this is your {{user-token}} like this:
-
-<p>
-<table cellpadding="10", border="1" >
-  <tr>
-    <th>HTTP response code</th>
-    <td>201 Created</td>
-  </tr>
-  <tr>
-    <th>HTTP response headers</th>
-    <td>Content-Type: application/json ; Vary: X-Auth-Token ; X-Subject-Token: {{user-token}}</td>
-  </tr>
-  <tr>
-    <th>HTTP Headers</th>
-    <td>Content-Type: application/json</td>
-  </tr>
-  <tr>
-    <th>HTTP Body</th>
-    <td>
-    {
-       "token": {
-               "domain": {
-               "id": "67576fe70df44bc280da74916a58d0f1",
-               [...]
-               "issued\_at": "2015-07-03T07:43:42.517728Z"
-               }
-        }
-    }     
-    </td>
-  </tr>
-</table>
-</p>
-
-Please, be careful pasting your {{user-token}} properly on next steps.
-This is your API token and it will be valid for 3 years.

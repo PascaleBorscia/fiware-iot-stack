@@ -15,7 +15,7 @@ In order to do so, you have to select the Data API entity attributes.  On the fo
 
 ```
 POST /NGSI10/subscribeContext HTTP/1.1
-Host: test.ttcloud.net:1026
+Host: hackathon.villatolosa.com/cb
 Accept: application/json
 Content-Type: application/json
 Fiware-Service: {{Fiware-Service}} 
@@ -29,7 +29,7 @@ X-Auth-Token: {{user-token}}
         "id": "mydevice"
         }
     ],
-    "reference": "http://test.ttcloud.net:8666/notify", 
+    "reference": "http://hackathon.villatolosa.com/sth/notify",
     "duration": "P1Y",
     "notifyConditions": [
            {
@@ -48,8 +48,8 @@ Your device data is now stored in the FIWARE IoT Stack, and your can get the raw
 You can get the last N values stored as follows:
 
 ```
-GET /STH/v1/contextEntities/type/device/id/mydevice/attributes/temperature?lastN=10 HTTP/1.1
-Host: test.ttcloud.net:8666
+GET /sth/type/device/id/mydevice/attributes/temperature?lastN=10 HTTP/1.1
+Host: hackathon.villatolosa.com
 Accept: application/json
 Content-Type: application/json
 Fiware-Service: {{Fiware-Service}} 
@@ -60,8 +60,8 @@ X-Auth-Token: {{user-token}}
 More complex filtering like data interval selection and results pagination is also available:
 
 ```
-GET /STH/v1/contextEntities/type/device/id/mydevice/attributes/temperature?hLimit=3&hOffset=0&dateFrom=2014-02-14T00:00:00.00
-Host: test.ttcloud.net:8666
+GET /sth/type/device/id/mydevice/attributes/temperature?hLimit=3&hOffset=0&dateFrom=2014-02-14T00:00:00.00
+Host: hackathon.villatolosa.com
 Accept: application/json
 Content-Type: application/json
 Fiware-Service: {{Fiware-Service}} 
@@ -121,8 +121,8 @@ Sometimes, the amount of stored data may be huge and it is not efficient to get 
 You can get aggregated data to calculate this basic statistics as follows:
 
 ```
-GET /STH/v1/contextEntities/type/device/id/mydevice/attributes/temperature?aggrMethod=sum&aggrPeriod=second&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2015-02-22T23:00:00.000Z
-Host: test.ttcloud.net:8666
+GET /sth/type/device/id/mydevice/attributes/temperature?aggrMethod=sum&aggrPeriod=second&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2015-02-22T23:00:00.000Z
+Host: hackathon.villatolosa.com:8666
 Accept: application/json
 Content-Type: application/json
 Fiware-Service: {{Fiware-Service}} 
