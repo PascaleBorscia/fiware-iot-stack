@@ -1,7 +1,7 @@
-site_name: FIWARE-IOT-Stack
-site_url: https://github.com/telefonicaid/fiware-iot-stack/
-repo_url: https://github.com/telefonicaid/fiware-iot-stack.git
-site_description: IoT Platform document site
+site_name: EMTECH-Hackathon
+site_url: https://github.com/PascaleBorscia/fiware-iot-stack/
+repo_url: https://github.com/PascaleBorscia/fiware-iot-stack.git
+site_description: IoT Platform EMTECH Hackathon document site
 docs_dir: docs/
 site_dir: html
 markdown_extensions: [toc,tables, fenced_code]
