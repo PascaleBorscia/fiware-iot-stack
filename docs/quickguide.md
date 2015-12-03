@@ -169,7 +169,7 @@ data.
 Anyway, you can always clone this sample freeboard and use it as a template for yours:
 
 
-[*https://freeboard.io/board/69lZ9V*](https://freeboard.io/board/69lZ9V)
+[*https://freeboard.io/board/HBEY35*](https://freeboard.io/board/HBEY35)
 
 ### Step 5 - Send commands 
 
