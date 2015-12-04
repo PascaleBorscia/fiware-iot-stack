@@ -33,7 +33,7 @@ collection for [*POSTMAN extension for Google
 Chrome*](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop),
 all this guide samples and some additional operations are there.
 
-[*https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/Fiware%20EMTECH%20Hackathon.json.postman_collection*](https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/Fiware%20EMTECH%20Hackathon.json.postman_collection)
+[*https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection*](https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/Fiware%20EMTECH%20Hackathon.json.postman_collection)
 
 Please, remember to create a POSTMAN environment with your credentials for this POSTMAN collection.
 
