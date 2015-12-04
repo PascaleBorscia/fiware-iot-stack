@@ -1,18 +1,15 @@
 
 Lora Agent API allows you to:
 
-- Register your LoRa device to reduce the message footprint and use commands.
 - Send data from the LoRa device to the FIWARE IoT Stack
 - Send commands from your application to the LoRa device
 
-# Register your LoRa IoT device
-
 Your LoRa Tracker is already registered to receive command on the SET_tracking.
 SET_tracking allow to modify the tracking mode:
-    SLEEP : no tracking
-    SLOWTRACK : 1 tracking/hour
-    FASTTRACK : 1 tracking/10 min
-    MOTIONTRACK: motion tracking
+- SLEEP : no tracking
+- SLOWTRACK : 1 tracking/hour
+- FASTTRACK : 1 tracking/10 min
+- MOTIONTRACK: motion tracking
 
 # Send observations 
 
