@@ -12,11 +12,13 @@ pages:
   - 'Getting Started': 'quickguide.md'
   - 'APIs':
     - 'Device API': 'device_api.md'
+    - 'Lora Agent API': 'loraagent_api.md'
     - 'Data API': 'data_api.md'
     - 'Historic Data API': 'historicdata_api.md'
   - 'Architecture':
     - 'FIWARE Components': 'walkthrough.md'
     - 'Device Backend Gateway (IDAS)': 'device_gateway.md'
+    - 'LoRa Agent': 'lora-agent.md'
     - 'Context Broker (Orion)': 'context_broker.md'
     - 'Short Term Historic (STH)': 'sth.md'
 
