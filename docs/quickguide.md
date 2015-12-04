@@ -33,11 +33,11 @@ collection for [*POSTMAN extension for Google
 Chrome*](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop),
 all this guide samples and some additional operations are there.
 
-[*https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection*](https://github.com/PascaleBorscia/fiware-iot-stack/raw/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection)
+[*Fiware EMTECH Hackathon*](https://raw.githubusercontent.com/PascaleBorscia/fiware-iot-stack/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection)
 
-[*https://raw.githubusercontent.com/PascaleBorscia/fiware-iot-stack/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection*](https://raw.githubusercontent.com/PascaleBorscia/fiware-iot-stack/master/docs/postman/Fiware%20EMTECH%20Hackathon.json.postman_collection)
+Please, remember to create a POSTMAN environment with your credentials for this POSTMAN collection.You can modify this
+[*https://raw.githubusercontent.com/PascaleBorscia/fiware-iot-stack/master/docs/postman/Hackathon%20EMTECH.postman_environment*](https://raw.githubusercontent.com/PascaleBorscia/fiware-iot-stack/master/docs/postman/Hackathon%20EMTECH.postman_environment)
 
-Please, remember to create a POSTMAN environment with your credentials for this POSTMAN collection.
 
 # Step 1 - Send data
 
