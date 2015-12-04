@@ -122,7 +122,7 @@ You can get aggregated data to calculate this basic statistics as follows:
 
 ```
 GET /sth/type/device/id/mydevice/attributes/temperature?aggrMethod=sum&aggrPeriod=second&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2015-02-22T23:00:00.000Z
-Host: {{HOST}}:8666
+Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
 Fiware-Service: {{Fiware-Service}} 

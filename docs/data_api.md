@@ -15,7 +15,7 @@ On the other hand, processes running as part of your application architecture th
 Entities that would be relevant to the NiceEating application are of type Restaurant, Client and Rating. For example, when a given user scores a restaurant (e.g. in a scale from 0 to 5, “Client1234” scores “4” for the “LeBistro” restaurant) the smartphone application plays the Context Producer role **creating** a Rating entity by issuing the following HTTP request :
 
 ```
-POST <cb_host>:<cb_port>/v1/contextEntities/type/Rating/id/LeBistro::Client1234
+POST {{HOST}}/cb/v1/contextEntities/type/Rating/id/LeBistro::Client1234
 {
   "attributes" : [{
       "name" : "score",
@@ -29,7 +29,7 @@ POST <cb_host>:<cb_port>/v1/contextEntities/type/Rating/id/LeBistro::Client1234
 Each time a new Rating entity is created, the average rating for the corresponding restaurant is recalculated by the application backend which (playing also the role of Context Producer) **updates** the Restaurant entity accordingly:
 
 ```
-PUT <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro/attributes/average_scoring
+PUT {{HOST}}/cb/v1/contextEntities/type/Restaurant/id/LeBistro/attributes/average_scoring
 {
    "value" : "4.2"
 }
@@ -38,7 +38,7 @@ PUT <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro/attribute
 Finally, the user can get the information of a given Restaurant using the smartphone application. In that case the application works as Context Consumer, **querying** the Restaurant entity. For example, to get the average_scoring attribute, the client application could query for it in the following way:
 
 ```
-GET <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro/attributes/average_scoring
+GET {{HOST}}/cb/v1/contextEntities/type/Restaurant/id/LeBistro/attributes/average_scoring
 //getting a JSON response such as the following one:
 {
   "attributes" : [
@@ -58,7 +58,7 @@ GET <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro/attribute
 You can also obtain the values of all attributes of the "LeBistro" restaurant in a single shot:
 
 ```
-GET <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro
+GET {{HOST}}/cb/v1/contextEntities/type/Restaurant/id/LeBistro
 
 //getting a JSON response such as the following one:
 
@@ -111,7 +111,7 @@ GET <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro
 Alternatively, if you want to get the **attributes as a key map instead of as a vector**, you can use the attributesFormat parameter, in the following way
 
 ```
-GET <cb_host>:<cb_port>/v1/contextEntities/type/Restaurant/id/LeBistro?attributesFormat=object
+GET {{HOST}}/cb/v1/contextEntities/type/Restaurant/id/LeBistro?attributesFormat=object
 
 //getting a JSON response such as the following one:
 {
@@ -163,7 +163,7 @@ Apart from getting information using queries in a synchronous way (as illustrate
 In the case of NiceEating, the application backend could use a subscription so each time a new rating is cast by any user, the backend gets notified (in order to recalculate restaurant average score and publish it back in the Context Broker GE).
 
 ```
-POST <cb_host>:<cb_port>/v1/subscribeContext
+POST {{HOST}}/cb/v1/subscribeContext
 {
     "entities": [
         {
@@ -189,7 +189,7 @@ POST <cb_host>:<cb_port>/v1/subscribeContext
 Another case would be an application that subscribes to changes in average ratings of a given restaurant. This may be useful for restaurant owners in other to know how their restaurants score is evolving.
 
 ```
-POST <cb_host>:<cb_port>/v1/subscribeContext
+POST {{HOST}}/cb/v1/subscribeContext
 {
     "entities": [
         {
@@ -220,7 +220,7 @@ One very powerful feature in Context Broker GE is the ability to perform geo-loc
 For example, to query for all the restaurants within 13 km of the Madrid city center (identified by GPS coordinates 40.418889, -3.691944) a Context Consumer application will use the following query:
 
 ```
-POST <cb_host>:<cb_port>/v1/queryContext
+POST {{HOST}}/cb/v1/queryContext
 {
     "entities": [
         {

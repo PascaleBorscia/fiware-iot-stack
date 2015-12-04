@@ -18,7 +18,7 @@ If you simply want to send observations you can skip this and just go to the "Se
 On this sample a device is registered to send temperature observations using UL2.0 protocol and a PING command:
 
 ```
-POST $HOST_IOTAGENT/iot/devices
+POST {{HOST}}/ul/iot/devices
 
 Headers: {'content-type': 'application/json’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: OpenIoT”; "Fiware-ServicePath: /"}
 Payload:
@@ -59,7 +59,7 @@ The important parameters to be defined are:
 In this case, it will be necessary to provision a device in the MQTT IoT Agent:
 
 ```
-POST $HOST_IOTAGENT/iot/devices
+POST {{HOST}}/ul/iot/devices
 
 Headers: {'content-type': 'application/json’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: OpenIoT”; "Fiware-ServicePath: /"}
 Payload:
@@ -107,7 +107,7 @@ Sending multiple observations in the same message is also possible with the foll
 
 ```
 //“alias1|value1#alias2|value2#alias3|value3...”
-POST  $HOST_IOTAGENT/d?k= <apikey>&i= <device_ID>
+POST  {{HOST}}/ul/d?k= <apikey>&i= <device_ID>
 Headers: {'content-type': 'application/text’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: OpenIoT”; "Fiware-ServicePath: /"}
 Payload: ‘t|23#h|80#l|95#m|Quiet‘
 ```
