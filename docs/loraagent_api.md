@@ -6,6 +6,7 @@ Lora Agent API allows you to:
 
 Your LoRa Tracker is already registered to receive command on the SET_tracking.
 SET_tracking allow to modify the tracking mode:
+
 - SLEEP : no tracking
 - SLOWTRACK : 1 tracking/hour
 - FASTTRACK : 1 tracking/10 min
