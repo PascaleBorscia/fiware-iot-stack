@@ -8,8 +8,8 @@ Your LoRa Tracker is already registered to receive command on the SET_tracking.
 SET_tracking allow to modify the tracking mode:
 
 - SLEEP : no tracking
-- SLOWTRACK : 1 tracking/hour
-- FASTTRACK : 1 tracking/10 min
+- SLOWTRACK : the tracker send 1 position request every one hour
+- FASTTRACK : the tracker send 1 position request every 10 min
 - MOTIONTRACK: motion tracking
 
 # Send observations 
@@ -17,7 +17,7 @@ SET_tracking allow to modify the tracking mode:
 Sending an observation from LoRa IoT devices is extremely efficient and simple with the following HTTP POST request:
 
 ```
-POST   http://hackathon.villatolosa.com:8090/notifications/
+POST   http://{{HOST}}:8090/notifications/
 Headers: {'content-type': 'application/xml’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: smartcity”; "Fiware-ServicePath: /team1"}
 Payload: <?xml version="1.0" encoding="UTF-8"?>
          <DevEUI_uplink xmlns="http://uri.actility.com/lora"><Time>2015-11-24T10:50:24.823+01:00</Time>
@@ -37,7 +37,7 @@ Finally, after connecting your IoT devices this way you (or any other developer 
 The corresponding updateContext sended by LoRa Agent:
 
 ```
-POST   http://hackathon.villatolosa.com/cb/v1/updateContext/
+POST   http://{{HOST}}/cb/v1/updateContext/
 Headers: {'content-type': 'application/xml’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: smartcity”; "Fiware-ServicePath: [Fiware-ServicePath]"}
 Payload: <updateContextRequest>
          <updateAction>APPEND</updateAction>
@@ -96,7 +96,7 @@ In order to send commands to devices, you just need to know which attributes cor
 You can declare the command related attributes at the registry process (POST request) in the following way:
 
 ```
-POST   http://hackathon.villatolosa.com/cb/v1/updateContext
+POST   http://{{HOST}}/cb/v1/updateContext
 Headers: {'content-type': 'application/xml’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: smartcity”; "Fiware-ServicePath: [Fiware-ServicePath]"}
 Payload:
         <updateContextRequest>
