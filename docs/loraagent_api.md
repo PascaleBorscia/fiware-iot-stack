@@ -2,7 +2,7 @@
 Lora Agent API allows you to:
 
 - Send data from the LoRa device to the FIWARE IoT Stack
-- Send commands from your application to the LoRa device
+- Change tracking mode from your application to the LoRa device
 
 Your LoRa Tracker is already registered to receive command on the SET_tracking.
 SET_tracking allow to modify the tracking mode:
@@ -20,50 +20,56 @@ To simulate LoRa Agent, you can send the message directly to Orion with the foll
 ```
 POST   http://{{HOST}}/cb/v1/updateContext
 Headers: {'content-type': 'application/json’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: [Fiware-Service]”; "Fiware-ServicePath: [Fiware-ServicePath]"}
-Payload: {
-             "contextElements": [
-                 {
-                     "type": "tracker",
-                     "isPattern": "false",
-                     "id": "20635F0012000011",
-                     "attributes": [
-                     {
-                         "name": "temperature",
-                         "type": "double",
-                         "value": "25.5"
-                     },
-                     {
-                         "name": "mode",
-                         "type": "string",
-                         "value": "POSITION"
-                     },
-                     {
-                         "name": "tracking",
-                         "type": "string",
-                         "value": "SLOWTRACK"
-                     },
-                     {
-                         "name": "levelBattery",
-                         "type": "long",
-                         "value": "0.75"
-                     },
-                     {
-                         "name": "position",
-                         "type": "coords",
-                         "value": "45.5, -10.5",
-                         "metadata":{
-                             "name":"location",
-                             "type":"string",
-                             "value":"WGS84"
-                         }
-                     },
-                     ]
-                 }
-             ],
-             "updateAction": "APPEND"
-         }
+Payload:
+{
+    "contextElements": [
+        {
+            "type": "tracker",
+            "isPattern": "false",
+            "id": "20635F0012000011",
+            "attributes": [
+            {
+                "name": "temperature",
+                "type": "double",
+                "value": "25.5"
+            },
+            {
+                "name": "mode",
+                "type": "string",
+                "value": "POSITION"
+            },
+            {
+                "name": "tracking",
+                "type": "string",
+                "value": "SLOWTRACK"
+            },
+            {
+                "name": "levelBattery",
+                "type": "long",
+                "value": "0.75"
+            },
+            {
+                "name": "position",
+                "type": "coords",
+                "value": "45.5, -10.5",
+                "metadatas":[
+                    {
+                    "name":"location",
+                    "type":"string",
+                    "value":"WGS84"
+
+                    }
+                ]
+            }
+            ]
+        }
+    ],
+    "updateAction": "APPEND"
+}
+
 ```
 
+# Get Data
 
 Finally, after connecting your IoT devices this way you (or any other developer with the right access permissions) should be able to use the Data API to read the NGSI entity assigned to your device.
 
@@ -74,12 +80,104 @@ Payload:
 
 ```
 
+Results
 
-# Act upon devices 
+```
+{
+  "contextResponses": [
+    {
+      "contextElement": {
+        "type": "edison",
+        "isPattern": "false",
+        "id": "myEdison",
+        "attributes": [
+          {
+            "name": "TimeInstant",
+            "type": "ISO8601",
+            "value": "2015-12-01T16:45:37.997157"
+          }
+        ]
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    },
+    {
+      "contextElement": {
+        "type": "Room",
+        "isPattern": "false",
+        "id": "Room1",
+        "attributes": [
+          {
+            "name": "pressure",
+            "type": "integer",
+            "value": "763"
+          },
+          {
+            "name": "temperature",
+            "type": "float",
+            "value": "26.5"
+          }
+        ]
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    },
+    {
+      "contextElement": {
+        "type": "tracker",
+        "isPattern": "false",
+        "id": "20635F0012000011",
+        "attributes": [
+          {
+            "name": "levelBattery",
+            "type": "long",
+            "value": "0.75"
+          },
+          {
+            "name": "mode",
+            "type": "string",
+            "value": "POSITION"
+          },
+          {
+            "name": "position",
+            "type": "coords",
+            "value": "45.5, -10.5",
+            "metadatas": [
+              {
+                "name": "location",
+                "type": "string",
+                "value": "WGS84"
+              }
+            ]
+          },
+          {
+            "name": "temperature",
+            "type": "double",
+            "value": "25.5"
+          },
+          {
+            "name": "tracking",
+            "type": "string",
+            "value": "SLOWTRACK"
+          }
+        ]
+      },
+      "statusCode": {
+        "code": "200",
+        "reasonPhrase": "OK"
+      }
+    }
+  ]
+}
+```
 
-In order to send commands to devices, you just need to know which attributes correspond to commands and update them.
+# Change tracking mode
 
-You can declare the command related attributes at the registry process (POST request) in the following way:
+You can change tracking mode (POST request) in the following way:
 
 ```
 POST   http://{{HOST}}/cb/v1/updateContext

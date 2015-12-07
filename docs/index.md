@@ -29,3 +29,6 @@ FIWARE IoT Stack is based on the following [FIWARE components](walkthrough.md) i
 - Context Broker (Orion)
 - Short Term Historic (STH)
 
+## Edison Integration
+
+To start you can find examples of integration of Edison in the Fiware IoT Stack [*https://github.com/Orange-OpenSource/fiware-edison*](https://github.com/Orange-OpenSource/fiware-edison)
