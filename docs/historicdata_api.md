@@ -1,9 +1,9 @@
 Historic Data API allows you to:
 
 - Get raw time series data sent from your device
-- Get aggregated time series data (max, min, average ...) 
+- Get aggregated time series data (max, min, average ...)
 
-Historic Data API provides raw and aggregated time series information about the evolution in time of data from your device. 
+Historic Data API provides raw and aggregated time series information about the evolution in time of data from your device.
 
 In a nutshell, using Historic Data API you can get basic statistics from your IoT device data but without storing and processing it on your service. Please, take into account that you must active the historic for the relevant data from your device.
 
@@ -14,13 +14,13 @@ You have to choose which data historic from your IoT device is relevant to be st
 In order to do so, you have to select the Data API entity attributes.  On the following examples, the temperature attribute will be selected:
 
 ```
-POST /NGSI10/subscribeContext HTTP/1.1
-Host: {{HOST}}/cb
+POST /cb/v1/subscribeContext HTTP/1.1
+Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
-Fiware-Service: {{Fiware-Service}} 
-Fiware-ServicePath: {{Fiware-ServicePath}} 
-X-Auth-Token: {{user-token}}
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath}}
+X-Auth-Token: {{token}}
 
 {
     "entities": [
@@ -33,7 +33,7 @@ X-Auth-Token: {{user-token}}
     "duration": "P1Y",
     "notifyConditions": [
            {
-                "type": "ONCHANGE", 
+                "type": "ONCHANGE",
                 "condValues": ["TimeInstant" ]
 } ],
 "throttling": "PT1S" }
@@ -52,9 +52,9 @@ GET /sth/type/device/id/mydevice/attributes/temperature?lastN=10 HTTP/1.1
 Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
-Fiware-Service: {{Fiware-Service}} 
-Fiware-ServicePath: {{Fiware-ServicePath}} 
-X-Auth-Token: {{user-token}}
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath}}
+X-Auth-Token: {{token}}
 ```
 
 More complex filtering like data interval selection and results pagination is also available:
@@ -64,9 +64,9 @@ GET /sth/type/device/id/mydevice/attributes/temperature?hLimit=3&hOffset=0&dateF
 Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
-Fiware-Service: {{Fiware-Service}} 
-Fiware-ServicePath: {{Fiware-ServicePath}} 
-X-Auth-Token: {{user-token}}
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath}}
+X-Auth-Token: {{token}}
 ```
 
 You will get a list with the requested attribute values and its associated timestamps:
@@ -125,9 +125,9 @@ GET /sth/type/device/id/mydevice/attributes/temperature?aggrMethod=sum&aggrPerio
 Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
-Fiware-Service: {{Fiware-Service}} 
-Fiware-ServicePath: {{Fiware-ServicePath}} 
-X-Auth-Token: {{user-token}}
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath}}
+X-Auth-Token: {{token}}
 ```
 
 As aggrMethog you can specify the following values that let you calculate:
@@ -135,8 +135,8 @@ As aggrMethog you can specify the following values that let you calculate:
 - max: maximum value
 - min: minimum value
 - sum: sum of all the samples
-- sum2: sum of the square value of all the samples. 
- 
+- sum2: sum of the square value of all the samples.
+
 Combining the information provided by these aggregated methods with the number of samples you will also get on the response, it is possible to calculate basic statistics such as the average value, the variance as well as the standard deviation.
 
 You will get the aggregated data value and the number of samples on the response:

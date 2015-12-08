@@ -1,26 +1,29 @@
 
-Lora Agent API allows you to:
+Lora Agent allows you to:
 
 - Send data from the LoRa device to the FIWARE IoT Stack
 - Change tracking mode from your application to the LoRa device
 
-Your LoRa Tracker is already registered to receive command on the SET_tracking.
-SET_tracking allow to modify the tracking mode:
+Your LoRa Tracker is already registered on the Orion Context Broker and can receive command on the `SET_tracking` attribute. This `SET_tracking` attribute allows to modify the tracking mode:
 
-- SLEEP : no tracking
-- SLOWTRACK : the tracker send 1 position request every one hour
-- FASTTRACK : the tracker send 1 position request every 10 min
-- MOTIONTRACK: motion tracking
+- `SLEEP`: no tracking
+- `SLOWTRACK`: the tracker send 1 position request every one hour
+- `FASTTRACK`: the tracker send 1 position request every 10 min
+- `MOTIONTRACK`: motion tracking
 
-# Send observations 
+# Simulating a LoRa device
 
-The tracker LoRa sends the data to the LoRa Agent that forwards to Orion.
+The tracker LoRa sends the data to the LoRa Agent that forwards it to Orion.
 To simulate LoRa Agent, you can send the message directly to Orion with the following HTTP POST request:
 
 ```
-POST   http://{{HOST}}/cb/v1/updateContext
-Headers: {'content-type': 'application/json’; 'X-Auth-Token' : [TOKEN]; "Fiware-Service: [Fiware-Service]”; "Fiware-ServicePath: [Fiware-ServicePath]"}
-Payload:
+POST   /cb/v1/contextEntities/{{tracker_id}}
+HOST: {{host}}
+Content-Type: application/json
+X-Auth-Token: {{TOKEN}}
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath]}}
+
 {
     "contextElements": [
         {
@@ -66,7 +69,6 @@ Payload:
     ],
     "updateAction": "APPEND"
 }
-
 ```
 
 # Get Data
@@ -202,4 +204,3 @@ Payload:
         }
 
 ```
-

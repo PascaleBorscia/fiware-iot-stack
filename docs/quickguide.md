@@ -1,16 +1,13 @@
 # Step 0 - Credentials
 
-Please, request your credentials. You will receive an email containing these fields that are required for the following steps:
+Please, request your credentials for your team at [fiware.d4m@orange.com](mailto:fiware.d4m@orange.com).
+You will receive an email containing these fields that are required for the following steps:
 
 <p>
 <table cellpadding="10", border="1" >
   <tr>
     <th>Field name</th>
     <th>Description</th>
-  </tr>
-  <tr>
-    <td>{{apikey}}      </td>
-    <td>API Key used for devices to send data</td>
   </tr>
   <tr>
     <td>{{token}}      </td>
@@ -27,7 +24,6 @@ Please, request your credentials. You will receive an email containing these fie
 </table>
 </p>
 
-The apikey is identical to the token.
 In order test the API, we really recommend you use the following sample
 collection for [*POSTMAN extension for Google
 Chrome*](https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop),
@@ -49,7 +45,7 @@ Sending data is as simple as sending an HTTP POST request using your API
 key with your measures. Please use “\#” and “|” separators to split data
 and measures.  
 
-Please remember that you will need to send as query parameters on the URL your {{apikey}} and your device identifier. 
+Please remember that you will need to send as query parameters on the URL your {{TOKEN}} and your device identifier.
 
 <p>
 <table cellpadding="10", border="1" >
@@ -174,7 +170,7 @@ Anyway, you can always clone this sample freeboard and use it as a template for 
 
 [*https://freeboard.io/board/HBEY35*](https://freeboard.io/board/HBEY35)
 
-### Step 5 - Send commands 
+### Step 5 - Send commands
 
 You can send commands to the device in order to trigger any action like
 turning on a LED or a relay. In order to do so, you need to register your
@@ -347,12 +343,3 @@ Historic data is accessible using the Short Term historic API.
 >> http://hackathon.villatolosa.com/sth/notify).
 
 More info: [Historic Data API](historicdata_api.md)
-
-**Data visualization tools**
-
-Do you need to show your devices on a map? want your data in a Google
-Sheet? prefer to use Ducksboard for creating dashboards? Take a look to
-our set of data visualization tools connectors:
-
-[*https://github.com/telefonicaid/fiware-dataviz*](https://github.com/telefonicaid/fiware-dataviz)
-
