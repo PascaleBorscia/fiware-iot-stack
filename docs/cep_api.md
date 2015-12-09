@@ -1,12 +1,12 @@
-Cepheus-CEP provides a Complex Event Processor (CEP) with a NGSI 9/10 interface.
+Cepheus provides a Complex Event Processor (CEP) with a NGSI 9/10 interface.
 
-The goal of a Cepheus-CEP is to process data in real time.
+The goal of a Cepheus is to process data in real time.
 Frequently implemented features include filtering, aggregating and merging real-time data from your IoT device data.
 
 Thanks to a CEP, it is easy for applications to only subscribe to value-added data which is relevant to them.
 CEP technology is sometimes also referred to as event stream analysis, or real time event correlation.
 
-For more information about Esper, the CEP engine used in Cepheus-CEP, please refer to its [presentation](http://www.espertech.com/esper/)
+For more information about Esper, the CEP engine used in Cepheus, please refer to its [presentation](http://www.espertech.com/esper/)
 and [documentation](http://www.espertech.com/esper/documentation.php).
 
 # Configure CEP
@@ -106,7 +106,7 @@ X-Auth-Token: {{token}}
 
 If you are familiar with FIWARE components, on this request you are using the Data API subscription operation to notify new data from your device to the FIWARE CEP component providing the CEP API.
 
-# Get average
+# Get result
 
 Your device data is now sended in the CEP, and you can get the average of temperatures in your application.
 
