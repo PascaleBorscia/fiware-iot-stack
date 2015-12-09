@@ -19,7 +19,7 @@ FIWARE IoT Stack provides the following APIs:
 - [Lora Agent API](loraagent_api.md): allows sending data from the LoRa device to the cloud and receiving commands.
 - [Data API](data_api.md): allows querying and subscribing to data stored at the cloud.
 - [Historic Data API](historicdata_api.md): allows querying historic data series and statistics stored at the cloud.
-- [CEP API] (cep_api.md):  allows to process basic events (from data provided by sensors) and generate higher-level aggregated events.
+- [CEP API](cep_api.md):  allows to process basic events (from data provided by sensors) and generate higher-level aggregated events.
 
 ## FIWARE Components
 

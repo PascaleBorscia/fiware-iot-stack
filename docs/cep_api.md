@@ -11,10 +11,67 @@ and [documentation](http://www.espertech.com/esper/documentation.php).
 
 # Configure CEP
 
-You have to choose which data historic from your IoT device is relevant to be stored at the FIWARE IoT Stack.
+To start, you must configure the CEP. The CEP must know the upcoming events (entities), the upgoing events (new or not new entities)
+and the statements.
 
-In order to do so, you have to select the Data API entity attributes.  On the following examples, the temperature attribute will be selected:
+In order to do so, you have to select the CEP API Add Configuration.  On the following examples, let us consider we have :
 
+ - a set of NGSI-capable temperature sensors across multiple rooms
+ - multiple rooms over a set of floors
+
+You would like to get the average temperature (over the last 10 minutes) on each floor (updated every 1 minute).
+For this, you send the configuration:
+
+
+```
+POST /cep/v1/admin/config HTTP/1.1
+Host: {{HOST}}
+Accept: application/json
+Content-Type: application/json
+Fiware-Service: {{Fiware-Service}}
+Fiware-ServicePath: {{Fiware-ServicePath}}
+X-Auth-Token: {{token}}
+
+{
+  "host":"http://{{HOST}}/cep",
+  "in":[
+    {
+      "id":"Room1",
+      "type":"Room",
+      "attributes":[
+        { "name":"temperature", "type":"double" },
+        { "name":"floor", "type":"string" }
+      ]
+    }
+  ],
+  "out":[
+    {
+      "id":"Floor1",
+      "type":"Floor",
+      "attributes":[
+        { "name":"temperature", "type":"double" }
+      ],
+      "brokers": [
+        { "url":"http://{{HOST}}/cb",
+          "serviceName": "{{Fiware-Service}}",
+          "servicePath": "{{Fiware-ServicePath}}",
+          "authToken": "{{TOKEN}}"
+        }
+      ]
+    }
+  ],
+  "statements":[
+    "INSERT INTO Floor SELECT floor as id, avg(temperature) as temperature FROM Room.win:time(10 min) GROUP BY floor OUTPUT LAST EVERY 10 sec"
+  ]
+}
+
+```
+
+# Activate the CEP
+
+You have to choose which data from your IoT device is relevant to be perform by the CEP at the FIWARE IoT Stack.
+
+In order to do so, you have to select the Data API entity attributes. On the following examples, the Room entity will be selected:
 ```
 POST /cb/v1/subscribeContext HTTP/1.1
 Host: {{HOST}}
@@ -25,32 +82,38 @@ Fiware-ServicePath: {{Fiware-ServicePath}}
 X-Auth-Token: {{token}}
 
 {
-    "entities": [
-        {"type": "device",
-        "isPattern": "false",
-        "id": "mydevice"
-        }
-    ],
-    "reference": "http://{{HOST}}/sth/notify",
-    "duration": "P1Y",
-    "notifyConditions": [
-           {
-                "type": "ONCHANGE",
-                "condValues": ["TimeInstant" ]
-} ],
-"throttling": "PT1S" }
-```
-
-If you are familiar with FIWARE components, on this request you are using the Data API subscription operation to notify new data from your device to the FIWARE STH component providing the Historic Data API.
-
-# Get raw time series data
-
-Your device data is now stored in the FIWARE IoT Stack, and your can get the raw time series in you application.
-
-You can get the last N values stored as follows:
+   "entities": [
+     {
+       "id": "Room1",
+       "type": "Room",
+       "isPattern": "false"
+     }
+   ],
+   "reference": "http://{{HOST}}/cep/notify",
+   "duration": "P1D",
+   "notifyConditions": [
+     {
+       "type": "ONCHANGE",
+       "condValues": [
+         "temperature"
+       ]
+     }
+   ],
+   "throttling": "PT5S"
+ }
 
 ```
-GET /sth/type/device/id/mydevice/attributes/temperature?lastN=10 HTTP/1.1
+
+If you are familiar with FIWARE components, on this request you are using the Data API subscription operation to notify new data from your device to the FIWARE CEP component providing the CEP API.
+
+# Get average
+
+Your device data is now sended in the CEP, and you can get the average of temperatures in your application.
+
+You can get obtain the average as follows:
+
+```
+GET /cb/v1/contextEntities/Floor1 HTTP/1.1
 Host: {{HOST}}
 Accept: application/json
 Content-Type: application/json
@@ -59,131 +122,33 @@ Fiware-ServicePath: {{Fiware-ServicePath}}
 X-Auth-Token: {{token}}
 ```
 
-More complex filtering like data interval selection and results pagination is also available:
-
-```
-GET /sth/type/device/id/mydevice/attributes/temperature?hLimit=3&hOffset=0&dateFrom=2014-02-14T00:00:00.00
-Host: {{HOST}}
-Accept: application/json
-Content-Type: application/json
-Fiware-Service: {{Fiware-Service}}
-Fiware-ServicePath: {{Fiware-ServicePath}}
-X-Auth-Token: {{token}}
-```
-
-You will get a list with the requested attribute values and its associated timestamps:
+You will get the Floor1 entity with the temperature attribute (average) values:
 
 ```
 HTTP 200 OK
 Content-Type : application/json
 
 {
-  "contextResponses": [
-    {
-      "contextElement": {
-        "attributes": [
-          {
-            "name": "temperature",
-            "values": [
-                {
-                    "recvTime": "2014-02-14T13:43:33.306Z"
-                    "attrValue": "21.28"
-                },
-                {
-                    "recvTime": "2014-02-14T13:43:34.636Z",
-                    "attrValue": "23.42"
-                },
-                {
-                    "recvTime": "2014-02-14T13:43:35.424Z",
-                    "attrValue": "22.12"
-                }
-            ]
-          }
-        ],
-        "id": "mydevice",
-        "isPattern": false,
-        "type": "device"
-      },
-      "statusCode": {
-        "code": "200",
-        "reasonPhrase": "OK"
+  "contextElement": {
+    "type": "Floor",
+    "isPattern": "false",
+    "id": "Floor1",
+    "attributes": [
+      {
+        "name": "temperature",
+        "type": "double",
+        "value": "27.5"
       }
-    }
-  ]
-}
-
-```
-
-Please, take into account that you will be able to get one attribute (i.e. temperature, hummidity ...) per request.
-
-# Get aggregated time series data
-
-Sometimes, the amount of stored data may be huge and it is not efficient to get the whole dataset in order to calculate basic statistics like average value.  
-
-You can get aggregated data to calculate this basic statistics as follows:
-
-```
-GET /sth/type/device/id/mydevice/attributes/temperature?aggrMethod=sum&aggrPeriod=second&dateFrom=2015-02-22T00:00:00.000Z&dateTo=2015-02-22T23:00:00.000Z
-Host: {{HOST}}
-Accept: application/json
-Content-Type: application/json
-Fiware-Service: {{Fiware-Service}}
-Fiware-ServicePath: {{Fiware-ServicePath}}
-X-Auth-Token: {{token}}
-```
-
-As aggrMethog you can specify the following values that let you calculate:
-
-- max: maximum value
-- min: minimum value
-- sum: sum of all the samples
-- sum2: sum of the square value of all the samples.
-
-Combining the information provided by these aggregated methods with the number of samples you will also get on the response, it is possible to calculate basic statistics such as the average value, the variance as well as the standard deviation.
-
-You will get the aggregated data value and the number of samples on the response:
-
-```
-HTTP 200 OK
-Content-Type : application/json
-
-{
-    "contextResponses": [
-        {
-            "contextElement": {
-                "attributes": [
-                    {
-                        "name": "temperature",
-                        "values": [
-                            {
-                                "_id": {
-                                    "origin": "2015-02-18T02:46:00.000Z",
-                                    "range": "minute",
-                                    "resolution": "second"
-                                },
-                                "points": [
-                                    {
-                                        "offset": 0,
-                                        "samples": 123,
-                                        "sum": 34.59
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ],
-                "id": "entityId",
-                "isPattern": false
-            },
-            "statusCode": {
-                "code": "200",
-                "reasonPhrase": "OK"
-            }
-        }
     ]
+  },
+  "statusCode": {
+    "code": "200",
+    "reasonPhrase": "OK"
+  }
 }
+
 ```
 
 # In more detail ...
 
-You can get more information about the FIWARE component providing this functionalty, reference API documentation and source code at [Short Term Historic (IDM)](sth.md)
+You can get more information about the FIWARE component providing this functionalty, reference API documentation and source code at [Complex Event Processing (Cepheus)](cep.md)
